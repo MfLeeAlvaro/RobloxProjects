@@ -1,0 +1,30 @@
+# Rojo
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+.project.json.bak
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Node modules (if any)
+node_modules/
+
+# Cache
+.aftman/
+*.cache

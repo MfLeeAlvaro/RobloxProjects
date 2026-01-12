@@ -1,0 +1,43 @@
+{
+  "name": "DeadFrontiers",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "$ignoreUnknownInstances": true,
+
+      "Modules": { "$path": "src/ReplicatedStorage/Modules", "$ignoreUnknownInstances": true },
+      "Ores": { "$path": "src/ReplicatedStorage/Ores", "$ignoreUnknownInstances": true },
+      "Shared": { "$path": "src/ReplicatedStorage/Shared", "$ignoreUnknownInstances": true },
+      "Vergil": { "$path": "src/ReplicatedStorage/Vergil", "$ignoreUnknownInstances": true },
+      "Weapons": { "$path": "src/ReplicatedStorage/Weapons", "$ignoreUnknownInstances": true }
+    
+    },
+
+    "ServerScriptService": {
+      "$path": "src/ServerScriptService",
+      "$ignoreUnknownInstances": true
+    },
+
+    "ServerStorage": {
+      "$ignoreUnknownInstances": true,
+
+      "BehaviorTrees": { "$path": "src/ServerStorage/BehaviorTrees", "$ignoreUnknownInstances": true },
+      "Enemies": { "$path": "src/ServerStorage/Enemies", "$ignoreUnknownInstances": true },
+      "Modules": { "$path": "src/ServerStorage/Modules", "$ignoreUnknownInstances": true },
+      "CSProtocols": { "$path": "src/ServerStorage/CSProtocols", "$ignoreUnknownInstances": true }
+    },
+
+    "StarterGui": { "$path": "src/StarterGui", "$ignoreUnknownInstances": true },
+    "StarterPack": { "$path": "src/StarterPack", "$ignoreUnknownInstances": true },
+
+    "StarterPlayer": {
+      "$ignoreUnknownInstances": true,
+      "StarterPlayerScripts": { "$path": "src/StarterPlayer/StarterPlayerScripts", "$ignoreUnknownInstances": true },
+      "StarterCharacterScripts": { "$path": "src/StarterPlayer/StarterCharacterScripts", "$ignoreUnknownInstances": true }
+    },
+
+    "Teams": { "$path": "src/Teams", "$ignoreUnknownInstances": true },
+    "SoundService": { "$path": "src/SoundService", "$ignoreUnknownInstances": true }
+  }
+}
