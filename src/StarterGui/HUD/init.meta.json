@@ -1,0 +1,15 @@
+{
+  "className": "ScreenGui",
+  "properties": {
+    "ResetOnSpawn": false,
+    "ClipToDeviceSafeArea": true,
+    "SafeAreaCompatibility": "FullscreenExtension",
+    "ScreenInsets": "CoreUISafeInsets",
+    "IgnoreGuiInset": false,
+    "ZIndexBehavior": "Sibling",
+    "DisplayOrder": 0,
+    "Archivable": true,
+    "Enabled": true,
+    "AutoLocalize": true
+  }
+}

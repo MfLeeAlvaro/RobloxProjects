@@ -1,0 +1,14 @@
+{
+  "className": "UIListLayout",
+  "properties": {
+    "Padding": {
+      "UDim": [0.06, 0]
+    },
+    "FillDirection": "Vertical",
+    "SortOrder": "LayoutOrder",
+    "HorizontalAlignment": "Left",
+    "VerticalAlignment": "Top",
+    "Wraps": false
+  }
+}
+  

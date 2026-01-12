@@ -1,0 +1,17 @@
+{
+  "className": "ScreenGui",
+  "$ignoreUnknownInstances": true,
+  "properties": {
+    "Name": "dialog",
+    "Enabled": true,
+    "DisplayOrder": 0,
+    "ResetOnSpawn": true,
+    "IgnoreGuiInset": false,
+    "ClipToDeviceSafeArea": true,
+    "SafeAreaCompatibility": "FullscreenExtension",
+    "ScreenInsets": "CoreUISafeInsets",
+    "ZIndexBehavior": "Sibling",
+    "AutoLocalize": true,
+    "Archivable": true
+  }
+}

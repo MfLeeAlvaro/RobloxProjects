@@ -1,0 +1,10 @@
+{
+  "className": "Frame",
+  "$ignoreUnknownInstances": true,
+  "properties": {
+    "Name": "dialogResponses",
+    "BackgroundTransparency": 1,
+    "Visible": true,
+    "ZIndex": 1
+  }
+}

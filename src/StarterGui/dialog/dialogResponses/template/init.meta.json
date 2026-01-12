@@ -1,0 +1,7 @@
+{
+  "className": "ImageButton",
+  "properties": {
+    "Visible": false,
+    "ZIndex": 1
+  }
+}

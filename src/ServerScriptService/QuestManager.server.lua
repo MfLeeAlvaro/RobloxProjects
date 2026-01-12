@@ -239,6 +239,42 @@ function _G.UpdateQuest(player, questType, data)
 	updateQuestProgress(player, questType, data)
 end
 
+-- Global function to assign a quest to a player (called from NPCs)
+function _G.AssignQuest(player, questId)
+	if not player or not player.Parent then return end
+	
+	local playerData = playerQuests[player.UserId]
+	if not playerData then return false end
+	
+	if not canAcceptQuest(player, questId) then
+		return false
+	end
+	
+	-- Initialize quest progress
+	local quest = QuestData[questId]
+	if not quest then return false end
+	
+	local progress = {}
+	for _, target in ipairs(quest.targets) do
+		progress[#progress + 1] = {
+			current = 0,
+			required = target.amount,
+			targetData = target
+		}
+	end
+	
+	playerData.activeQuests[questId] = {
+		progress = progress,
+		completed = false
+	}
+	
+	-- Notify client
+	questUpdateRemote:FireClient(player, questId, quest, progress)
+	
+	print("📋 Quest '" .. quest.name .. "' assigned to " .. player.Name)
+	return true
+end
+
 -- Handle kill quests (called from combat handler)
 -- This is already handled in SimpleCombatHandler.server.lua
 
