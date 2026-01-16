@@ -71,31 +71,58 @@ end
 -- Function to get available quests for a player
 function getAvailableQuests(player, npcId)
 	local npcInfo = NPCData[npcId]
-	if not npcInfo then return {} end
+	if not npcInfo then 
+		warn("NPC data not found for:", npcId)
+		return {} 
+	end
 
 	local availableQuests = {}
 	local playerLevel = player:FindFirstChild("Level")
 	local playerLevelValue = playerLevel and playerLevel.Value or 1
 
+	print("🔍 Getting available quests for " .. player.Name .. " from " .. npcInfo.name)
+	print("   Player level:", playerLevelValue)
+	print("   NPC offers " .. #npcInfo.quests .. " quests")
+
 	-- Check each quest this NPC offers
 	for _, questId in ipairs(npcInfo.quests) do
 		local quest = QuestData[questId]
-		if not quest then continue end
-
-		-- Check level requirement
-		if playerLevelValue >= quest.level then
-			-- Check if quest can be accepted (this would need QuestManager integration)
-			-- For now, just add all quests that meet level requirement
-			table.insert(availableQuests, {
-				id = questId,
-				name = quest.name,
-				description = quest.description,
-				rewards = quest.rewards,
-				level = quest.level
-			})
+		if not quest then 
+			warn("   ⚠ Quest '" .. questId .. "' not found in QuestData")
+			continue 
 		end
+
+		print("   Checking quest:", questId, "-", quest.name, "(Level", quest.level .. ")")
+
+		-- Check if quest can be accepted using QuestManager's function
+		if _G.CanAcceptQuest then
+			local canAccept = _G.CanAcceptQuest(player, questId)
+			if not canAccept then
+				print("     ❌ Cannot accept (filtered by CanAcceptQuest)")
+				continue -- Skip quests that can't be accepted
+			end
+			print("     ✅ Can accept")
+		else
+			-- Fallback: just check level requirement if QuestManager not available
+			if playerLevelValue < quest.level then
+				print("     ❌ Level too low (need " .. quest.level .. ", have " .. playerLevelValue .. ")")
+				continue
+			end
+			print("     ✅ Level requirement met")
+		end
+
+		-- Quest can be accepted, add it to the list
+		table.insert(availableQuests, {
+			id = questId,
+			name = quest.name,
+			description = quest.description,
+			rewards = quest.rewards,
+			level = quest.level
+		})
+		print("     ✓ Added to available quests list")
 	end
 
+	print("   📋 Returning " .. #availableQuests .. " available quests")
 	return availableQuests
 end
 
@@ -122,15 +149,26 @@ local function acceptQuestFromNPC(player, npcId, questId)
 	if _G.AssignQuest then
 		local success = _G.AssignQuest(player, questId)
 		if success then
-			print("📋 " .. player.Name .. " accepted quest " .. questId .. " from " .. npcInfo.name)
+			print("✅ " .. player.Name .. " accepted quest " .. questId .. " from " .. npcInfo.name)
+			-- Verify quest was actually stored
+			if _G.GetPlayerQuests then
+				local activeQuests = _G.GetPlayerQuests(player)
+				if activeQuests and activeQuests[questId] then
+					print("   ✓ Quest verified in player's active quests")
+				else
+					warn("   ⚠ Quest not found in player's active quests after assignment!")
+				end
+			end
 			return true
 		else
 			-- Quest couldn't be assigned (already active, level too low, etc.)
+			print("❌ Quest " .. questId .. " could not be assigned to " .. player.Name)
 			return false
 		end
+	else
+		warn("❌ _G.AssignQuest is not available!")
+		return false
 	end
-	
-	return false
 end
 
 -- Handle quest list request from client

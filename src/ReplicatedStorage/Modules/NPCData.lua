@@ -4,9 +4,9 @@ local npcData = {
 		greeting = "Greetings, traveler! I have tasks that need doing.",
 		quests = {
 			"first_blood",
-			"zombie_slayer",
-			"gather_stone",
-			"explore_yellow"
+			"survivors_duty",
+			"zombie_cleanup",
+			"zombie_slayer"
 		},
 		dialogues = {
 			noQuests = "You've completed all my quests for now. Check back later!",

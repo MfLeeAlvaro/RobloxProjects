@@ -21,6 +21,9 @@ local activeDialogs = {}
 -- Store quest data per NPC
 local pendingQuestRequests = {}
 
+-- Store pending quest acceptances
+local pendingQuestAcceptances = {}
+
 -- Function to show quest selection dialog
 local function showQuestDialog(dialog, npcId, npcInfo)
 	print("📤 Requesting quests for NPC:", npcId)
@@ -121,8 +124,16 @@ local function setupNPCDialog(npcModel, npcId)
 				end
 				
 				if foundQuestId then
+					-- Store the dialog to handle server response
+					pendingQuestAcceptances[foundQuestId] = {
+						dialog = dialog,
+						questName = questName,
+						npcId = npcId
+					}
+					
+					-- Request quest acceptance from server
 					acceptQuestRemote:FireServer(npcId, foundQuestId)
-					dialog:hideGui("Quest accepted! Good luck!")
+					-- Don't hide dialog yet - wait for server response
 				else
 					warn("❌ Quest not found:", questName)
 					dialog:hideGui("Quest not found. Please try again.")
@@ -282,6 +293,52 @@ workspace.ChildAdded:Connect(function(child)
 				trySetupNPCDialog(npcModel)
 			end
 		end)
+	end
+end)
+
+-- Listen for quest updates from server
+local questUpdateRemote = ReplicatedStorage:WaitForChild("QuestUpdateRemote")
+questUpdateRemote.OnClientEvent:Connect(function(questId, quest, progress)
+	print("📋 Client received quest update:", questId, quest.name)
+	print("   Progress targets:", #progress)
+	for i, prog in ipairs(progress) do
+		print("   Target " .. i .. ": " .. prog.current .. "/" .. prog.required)
+	end
+	-- TODO: Display quest in UI (quest log, HUD, etc.)
+end)
+
+-- Listen for quest completion from server
+local questCompleteRemote = ReplicatedStorage:WaitForChild("QuestCompleteRemote")
+questCompleteRemote.OnClientEvent:Connect(function(questId, quest)
+	print("✅ Client received quest completion:", questId, quest.name)
+	-- TODO: Show quest completion notification
+end)
+
+-- Listen for quest acceptance response from server
+acceptQuestRemote.OnClientEvent:Connect(function(success, questId)
+	print("📋 Quest acceptance response:", success, questId)
+	
+	local pendingAcceptance = pendingQuestAcceptances[questId]
+	if not pendingAcceptance then
+		warn("⚠️ No pending quest acceptance for questId:", questId)
+		return
+	end
+	
+	-- Clear pending acceptance
+	pendingQuestAcceptances[questId] = nil
+	
+	local dialog = pendingAcceptance.dialog
+	local questName = pendingAcceptance.questName
+	
+	if success then
+		print("✅ Quest accepted successfully:", questName)
+		dialog:hideGui("Quest accepted! Good luck!")
+	else
+		print("❌ Quest acceptance failed:", questName)
+		-- Get NPC info to show appropriate error message
+		local npcInfo = NPCData[pendingAcceptance.npcId]
+		local errorMessage = npcInfo and npcInfo.dialogues.questActive or "Unable to accept quest. You may already have this quest active or not meet the requirements."
+		dialog:hideGui(errorMessage)
 	end
 end)
 

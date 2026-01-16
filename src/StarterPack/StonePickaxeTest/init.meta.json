@@ -1,0 +1,7 @@
+{
+  "className": "Tool",
+  "properties": {
+    "Name": "StonePickaxeTest",
+    "RequiresHandle": true
+  }
+}

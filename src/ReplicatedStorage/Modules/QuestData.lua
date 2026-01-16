@@ -30,6 +30,36 @@ local questData = {
 		repeatable = true
 	},
 
+	["zombie_cleanup"] = {
+		name = "Zombie Cleanup",
+		description = "Clear out 10 zombies from the area",
+		questType = "Kill",
+		targets = {
+			{enemyType = "Any", amount = 10}
+		},
+		rewards = {
+			xp = 75,
+			coins = 35
+		},
+		level = 1,
+		repeatable = true
+	},
+
+	["survivors_duty"] = {
+		name = "Survivor's Duty",
+		description = "Eliminate 5 zombies to help secure the area",
+		questType = "Kill",
+		targets = {
+			{enemyType = "Any", amount = 5}
+		},
+		rewards = {
+			xp = 60,
+			coins = 25
+		},
+		level = 1,
+		repeatable = true
+	},
+
 	["hunter"] = {
 		name = "Hunter",
 		description = "Kill 5 Stalker zombies",
